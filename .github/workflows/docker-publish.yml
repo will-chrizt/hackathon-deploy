@@ -1,14 +1,52 @@
-name: Build and Push Docker Image
+name: Full CI Pipeline
 
 on:
   push:
-    branches:
-      - main  # or your deployment branch
+    branches: [main]
+ 
 
 jobs:
-  build-and-push:
+  lint:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint
+        run: npx eslint react-app/src/**/*.js
 
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Run SCA with npm audit
+        run: npm audit --audit-level=moderate
+
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Run unit tests
+        run: npm test
+
+  build-and-push:
+    needs: [lint, sca, sast, test]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
