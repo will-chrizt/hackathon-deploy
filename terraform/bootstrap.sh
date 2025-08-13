@@ -2,7 +2,7 @@
 set -e
 
 # 1. Initialize Kubernetes control plane
-kubeadm init --pod-network-cidr=10.244.0.0/16
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # 2. Configure kubectl for ubuntu user
 mkdir -p /home/ubuntu/.kube
