@@ -1,12 +1,17 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    clean: true // Cleans dist folder before each build
+    clean: true
   },
   module: {
     rules: [
@@ -21,20 +26,12 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html', // Make sure this file exists
-      filename: 'index.html'
+      template: './public/index.html'
     })
   ],
-  devServer: {
-    static: path.resolve(__dirname, 'dist'),
-    port: 3000,
-    open: true,
-    historyApiFallback: true // Supports React Router
-  },
-  mode: 'development'
+  resolve: {
+    extensions: ['.js', '.jsx']
+  }
 };
