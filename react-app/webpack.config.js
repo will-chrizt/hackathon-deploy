@@ -12,28 +12,9 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: 'babel-loader'
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
-  devServer: {
-    static: path.resolve(__dirname, 'dist'),
-    port: 3000
-  },
-  mode: 'development'
-
-  
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: 'babel-loader'
       },
       {
-        test: /\.css$/, // 👈 this handles CSS
+        test: /\.css$/, // ✅ Handles CSS imports
         use: ['style-loader', 'css-loader']
       }
     ]
@@ -43,8 +24,8 @@ module.exports = {
   },
   devServer: {
     static: path.resolve(__dirname, 'dist'),
-    port: 3000
+    port: 3000,
+    open: true // Optional: auto-opens browser
   },
   mode: 'development'
-  
 };
