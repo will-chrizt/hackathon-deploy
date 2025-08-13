@@ -20,7 +20,7 @@
     "@babel/core": "^7.23.1",
     "@babel/preset-env": "^7.23.0",
     "@babel/preset-react": "^7.22.15"
-    "css-loader": "^6.x.x",
-    "style-loader": "^3.x.x",
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0",
   }
 }
