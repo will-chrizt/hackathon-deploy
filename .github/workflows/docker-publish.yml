@@ -51,7 +51,6 @@ jobs:
     defaults:
       run:
         working-directory: react-app
-   
     steps:
       - uses: actions/checkout@v3
       - name: Log in to Docker Hub
@@ -63,3 +62,14 @@ jobs:
         run: docker build -t ${{ secrets.REGISTRY_USERNAME }}/react-app:latest .
       - name: Push Docker image
         run: docker push ${{ secrets.REGISTRY_USERNAME }}/react-app:latest
+
+  deploy-to-kubernetes:
+    needs: [build-and-push]
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f react-app/k8s/deployment.yaml
+          kubectl apply -f react-app/k8s/service.yaml
+          kubectl rollout status deployment/react-app
