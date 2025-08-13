@@ -2,6 +2,7 @@
   "name": "my-react-app",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production",
@@ -28,5 +29,8 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.2.2"
+     "eslint": "^9.33.0",
+    "@eslint/js": "^8.0.0",
+    "eslint-plugin-react": "^7.33.2"
   }
 }
