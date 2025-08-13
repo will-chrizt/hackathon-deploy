@@ -37,7 +37,7 @@ resource "aws_instance" "k8s_master" {
   vpc_security_group_ids = [aws_security_group.k8s_master_sg.id]
   associate_public_ip_address = true
 
-  user_data = file("${path.module}/bootstrap.sh")
+  user_data = file("/bootstrap.sh")
 
   tags = {
     Name = "k8s-master"
