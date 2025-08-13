@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
      defaults:
       run:
         working-directory: react-app
@@ -22,7 +22,7 @@ jobs:
       
 
   sca:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: react-app
@@ -34,7 +34,7 @@ jobs:
         run: npm audit --audit-level=moderate
 
   sast:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: react-app
@@ -48,7 +48,7 @@ jobs:
         uses: github/codeql-action/analyze@v2
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: react-app
@@ -61,7 +61,7 @@ jobs:
 
   build-and-push:
     needs: [lint, sca, sast, test]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: react-app
