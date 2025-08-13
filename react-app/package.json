@@ -28,7 +28,7 @@
     "style-loader": "^4.0.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.2",
      "eslint": "^9.33.0",
     "@eslint/js": "^8.0.0",
     "eslint-plugin-react": "^7.33.2"
