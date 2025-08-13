@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region to deploy into"
   type        = string
-  default     = "us-west-2"
+  default     = "us-east-1"
 }
 
 variable "master_ami" {
@@ -12,12 +12,13 @@ variable "master_ami" {
 variable "instance_type" {
   description = "EC2 instance type for the master node"
   type        = string
-  default     = "t3.medium"
+  default     = "t2.large"
 }
 
 variable "ssh_key_name" {
   description = "Name of the AWS key pair for SSH access"
   type        = string
+  default     ="willchristnv"
 }
 
 variable "ssh_user" {
