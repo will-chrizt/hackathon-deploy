@@ -1,17 +1,29 @@
 #!/bin/bash
 set -e
-
-# 1. Initialize Kubernetes control plane
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
-
-# 2. Configure kubectl for ubuntu user
+ 
+sudo kubeadm init --kubernetes-version=1.26.15
+ 
+# Configure kubeconfig for ubuntu user
 mkdir -p /home/ubuntu/.kube
-cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
+cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
-
-# 3. Deploy Weave CNI
-su - ubuntu -c "kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml"
-
-# 4. Remove the control-plane taint so pods can schedule on master
-NODE_NAME=$(kubectl get nodes -o name | cut -d/ -f2)
-kubectl taint node $NODE_NAME node-role.kubernetes.io/control-plane:NoSchedule- || true
+ 
+# Install Weave Net CNI
+sudo -u ubuntu kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+ 
+# Wait until node is Ready
+echo "Waiting for node to become Ready..."
+until sudo -u ubuntu kubectl get nodes | grep -q ' Ready '; do
+    sleep 5
+done
+ 
+# Remove control-plane taint
+sudo -u ubuntu kubectl taint node $(hostname) node-role.kubernetes.io/control-plane:NoSchedule- || true
+ 
+# Wait for kube-system pods
+echo "Waiting for kube-system pods to be Ready..."
+until sudo -u ubuntu kubectl get pods -n kube-system | grep -Ev 'STATUS|Running' | wc -l | grep -q '^0$'; do
+    sleep 5
+done
+ 
+echo "Kubernetes control-plane setup complete."
