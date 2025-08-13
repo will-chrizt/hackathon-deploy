@@ -1,10 +1,12 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    clean: true // Cleans dist folder before each build
   },
   module: {
     rules: [
@@ -14,7 +16,7 @@ module.exports = {
         use: 'babel-loader'
       },
       {
-        test: /\.css$/, // ✅ Handles CSS imports
+        test: /\.css$/,
         use: ['style-loader', 'css-loader']
       }
     ]
@@ -22,10 +24,17 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html', // Make sure this file exists
+      filename: 'index.html'
+    })
+  ],
   devServer: {
     static: path.resolve(__dirname, 'dist'),
     port: 3000,
-    open: true // Optional: auto-opens browser
+    open: true,
+    historyApiFallback: true // Supports React Router
   },
   mode: 'development'
 };
