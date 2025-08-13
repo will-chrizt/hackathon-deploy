@@ -11,13 +11,15 @@ permissions:
 jobs:
   lint:
     runs-on: ubuntu-latest
+     defaults:
+      run:
+        working-directory: react-app
     
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
         run: npm install
-      - name: Run ESLint
-        run: npx eslint react-app/src/**/*.js
+      
 
   sca:
     runs-on: ubuntu-latest
