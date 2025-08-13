@@ -11,16 +11,13 @@ permissions:
 jobs:
   lint:
     runs-on: self-hosted
+    env:
+      BASH_ENV: ~/.bashrc
     defaults:
       run:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
-      - name: Load Node environment
-        run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use node
       - name: Install dependencies
         run: npm install
       - name: Run ESLint
@@ -28,16 +25,13 @@ jobs:
 
   sca:
     runs-on: self-hosted
+    env:
+      BASH_ENV: ~/.bashrc
     defaults:
       run:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
-      - name: Load Node environment
-        run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use node
       - name: Install dependencies
         run: npm install
       - name: Run SCA with npm audit
@@ -59,16 +53,13 @@ jobs:
 
   test:
     runs-on: self-hosted
+    env:
+      BASH_ENV: ~/.bashrc
     defaults:
       run:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
-      - name: Load Node environment
-        run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use node
       - name: Install dependencies
         run: npm install
       - name: Run unit tests
@@ -82,12 +73,3 @@ jobs:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.REGISTRY_USERNAME }}/react-app:latest .
-      - name: Push Docker image
-        run: docker push ${{ secrets.REGISTRY_USERNAME }}/react-app:latest
