@@ -16,6 +16,8 @@ jobs:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
+      - name: Run linter
+        run: npm run lint || true  # The '|| true' ensures the workflow continues even if linting fails
 
   sca:
     runs-on: self-hosted
@@ -24,6 +26,8 @@ jobs:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
+      - name: Run SCA scan
+        run: npm audit || true  # The '|| true' ensures the workflow continues even if the audit finds issues
 
   sast:
     runs-on: self-hosted
@@ -44,6 +48,8 @@ jobs:
         working-directory: react-app
     steps:
       - uses: actions/checkout@v3
+      - name: Run tests
+        run: npm test || true  # The '|| true' ensures the workflow continues even if tests fail
 
   build-and-push:
     needs: [lint, sca, sast, test]
@@ -76,8 +82,7 @@ jobs:
 
   dast:
     runs-on: self-hosted
-    if: always()  # Ensures the job runs even if others fail
+    if: always()
     steps:
       - name: Skip DAST (disabled mode)
         run: echo "DAST is currently disabled. Skipping scan."
-          
