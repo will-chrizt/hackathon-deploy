@@ -75,14 +75,9 @@ jobs:
           kubectl rollout status deployment/react-app
 
   dast:
-    if: false  # 👈 Passive DAST is disabled by default
     runs-on: self-hosted
+    if: always()  # Ensures the job runs even if others fail
     steps:
-      - uses: actions/checkout@v3
-      - name: Run OWASP ZAP Passive Scan
-        uses: zaproxy/action-baseline@v0.4.0
-        with:
-          target: 'http://your-app-url.com'  # Replace with your actual app URL
-          rules_file_name: ''
-          allow_issue_writing: false
+      - name: Skip DAST (disabled mode)
+        run: echo "DAST is currently disabled. Skipping scan."
           
