@@ -73,3 +73,16 @@ jobs:
           kubectl apply -f react-app/k8s/deployment.yaml
           kubectl apply -f react-app/k8s/service.yaml
           kubectl rollout status deployment/react-app
+
+  dast:
+    if: false  # 👈 Passive DAST is disabled by default
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run OWASP ZAP Passive Scan
+        uses: zaproxy/action-baseline@v0.4.0
+        with:
+          target: 'http://your-app-url.com'  # Replace with your actual app URL
+          rules_file_name: ''
+          allow_issue_writing: false
+          
